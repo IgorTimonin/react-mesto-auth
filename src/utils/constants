@@ -1,0 +1,10 @@
+const validationObj = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__form-input',
+  submitButtonSelector: '.popup__form-submit',
+  inactiveButtonClass: 'popup__form_submit_inactive',
+  inputErrorClass: 'input_type_error',
+  activeErrorClass: 'input-error_active',
+};
+
+export {validationObj}
