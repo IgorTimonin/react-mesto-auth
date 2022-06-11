@@ -1,22 +1,12 @@
 import userPic from '../images/user.png';
 
-function handleEditAvatarClick() {
-  document.querySelector('.popup-avatar').classList.add('popup_opened')
-};
-
-function handleEditProfileClick() {
-  document.querySelector('.popup-profile').classList.add('popup_opened');
-}
-
-function handleAddPlaceClick() {
-  document.querySelector('.popup-add-card').classList.add('popup_opened');
-};
-
-export default function Main() {
+export default function Main({
+  onEditProfile, onAddPlace, onEditAvatar
+}) {
   return (
     <main>
       <section className='profile'>
-        <button className='profile__avatar-btn' onClick={handleEditAvatarClick}>
+        <button className='profile__avatar-btn' onClick={onEditAvatar}>
           <img
             className='profile__avatar profile__avatar_opacity'
             src={userPic}
@@ -29,7 +19,7 @@ export default function Main() {
             <button
               className='profile__edit-btn btn-opacity'
               type='button'
-              onClick={handleEditProfileClick}
+              onClick={onEditProfile}
             ></button>
           </div>
           <p className='profile__job'>профессия</p>
@@ -37,7 +27,7 @@ export default function Main() {
         <button
           className='profile__add-btn btn-opacity'
           type='button'
-          onClick={handleAddPlaceClick}
+          onClick={onAddPlace}
         ></button>
       </section>
       <section className='gallery'>
