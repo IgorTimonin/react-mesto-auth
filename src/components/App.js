@@ -7,15 +7,13 @@ import Main from './Main';
 import PopupWithForm from './PopupWithForm';
 
 function App() {
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
-    useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
   };
 
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
-    useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
 
   const handleEditProfileClick = () => {
     setIsAddPlacePopupOpen(true);
@@ -28,10 +26,16 @@ function App() {
   };
 
   const closeAllPopups = () => {
-    setIsAddPlacePopupOpen(false)
-    setIsAddPlacePopupOpen(false)
-    setIsEditAvatarPopupOpen(false)
-  }
+    setIsAddPlacePopupOpen(false);
+    setIsAddPlacePopupOpen(false);
+    setIsEditAvatarPopupOpen(false);
+    handleCardClick('');
+  };
+
+  const [selectedCard, setselectedCard] = useState('');
+  const handleCardClick = (data) => {
+    setselectedCard(data);
+  };
 
   return (
     <div>
@@ -40,6 +44,7 @@ function App() {
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}
         onEditAvatar={handleEditAvatarClick}
+        onCardClick={handleCardClick}
       />
       <Footer />
       <PopupWithForm
@@ -143,7 +148,7 @@ function App() {
           Введите адрес сайта.
         </span>
       </PopupWithForm>
-      <ImagePopup />
+      <ImagePopup card={selectedCard} onClose={closeAllPopups} />
     </div>
   );
 }

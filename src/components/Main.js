@@ -1,28 +1,56 @@
+import React, { useState, useEffect } from 'react';
 import userPic from '../images/user.png';
+import { api } from '../utils/Api.js';
+import Card from './Card';
 
 export default function Main({
-  onEditProfile, onAddPlace, onEditAvatar
+  onEditProfile,
+  onAddPlace,
+  onEditAvatar,
+  onCardClick,
 }) {
+  const [userName, setuserName] = useState('пользователь');
+  const [userDescription, setuserDescription] = useState('профессия');
+  const [userAvatar, setuserAvatar] = useState(userPic);
+
+  useEffect(() => {
+    api
+      .getUserData('https://nomoreparties.co/v1/cohort-41/users/me')
+      .then((card) => {
+        setuserName(card.name);
+        setuserDescription(card.about);
+        setuserAvatar(card.avatar);
+      });
+  }, []);
+
+  const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    api.getInitialCards().then((data) => {
+      setCards(data);
+    });
+  }, []);
+
   return (
     <main>
       <section className='profile'>
         <button className='profile__avatar-btn' onClick={onEditAvatar}>
           <img
             className='profile__avatar profile__avatar_opacity'
-            src={userPic}
+            src={userAvatar}
             alt='Аватар пользователя'
           />
         </button>
         <div className='profile__info'>
           <div className='profile__container'>
-            <h1 className='profile__name'>пользователь</h1>
+            <h1 className='profile__name'>{userName}</h1>
             <button
               className='profile__edit-btn btn-opacity'
               type='button'
               onClick={onEditProfile}
             ></button>
           </div>
-          <p className='profile__job'>профессия</p>
+          <p className='profile__job'>{userDescription}</p>
         </div>
         <button
           className='profile__add-btn btn-opacity'
@@ -32,22 +60,9 @@ export default function Main({
       </section>
       <section className='gallery'>
         <ul className='gallery__cards'>
-          <template className='gallery__template'>
-            <li className='gallery__item'>
-              <button
-                className='gallery__delete-btn gallery__delete-btn_hidden'
-                type='button'
-              ></button>
-              <img className='gallery__img' src='#' alt='макет' />
-              <div className='gallery__text'>
-                <h2 className='gallery__title'></h2>
-                <div className='gallery_like'>
-                  <button className='gallery__like-btn' type='button'></button>
-                  <div className='gallery__like-qty'>1</div>
-                </div>
-              </div>
-            </li>
-          </template>
+          {cards.map((card, i) => (
+            <Card key={i} card={card} onCardClick={onCardClick} />
+          ))}
         </ul>
       </section>
     </main>
