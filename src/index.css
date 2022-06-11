@@ -41,10 +41,7 @@
 @import url(../src/blocks/profile/__avatar-btn/profile__avatar-btn.css);
 @import url(../src/blocks/gallery/__like/gallery_like.css);
 @import url(../src/blocks/gallery/__like/__like-qty/gallery__like-qty.css);
-
-/* #root {
-    background-color: #000;
-}; */
+@import url(../src/blocks/body/body.css);
 
 #root {
   background-color: #000;
@@ -55,9 +52,4 @@
   font-family: "Inter", "Arial", "Helvetica", sans-serif;
   text-rendering: optimizeLegibility;
   max-width: 880px;
-}
-
-.body {
-  background-color: #000;
-  margin: 0;
-}
+};
