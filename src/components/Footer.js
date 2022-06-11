@@ -8,12 +8,10 @@ export default function Footer() {
     getYear();
   }, []);
   return (
-    <>
       <footer className='footer'>
         <p className='footer__copyright'>
           {date} &copy; Сделано с ❤️ Тимонин Игорь
         </p>
       </footer>
-    </>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import '../index.css';
 import Footer from './Footer';
 import Header from './Header';
@@ -8,18 +8,17 @@ import PopupWithForm from './PopupWithForm';
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [selectedCard, setselectedCard] = useState({});
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
   };
 
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
-
   const handleEditProfileClick = () => {
-    setIsAddPlacePopupOpen(true);
+    setIsEditProfilePopupOpen(true);
   };
-
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
 
   const handleAddPlaceClick = () => {
     setIsAddPlacePopupOpen(true);
@@ -27,12 +26,11 @@ function App() {
 
   const closeAllPopups = () => {
     setIsAddPlacePopupOpen(false);
-    setIsAddPlacePopupOpen(false);
+    setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     handleCardClick('');
   };
 
-  const [selectedCard, setselectedCard] = useState('');
   const handleCardClick = (data) => {
     setselectedCard(data);
   };

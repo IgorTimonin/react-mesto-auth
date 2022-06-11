@@ -1,6 +1,6 @@
 function ImagePopup({ card, onClose }) {
   return (
-    <div className={`popup popup_fullsize ${card && 'popup_opened'}`}>
+    <div className={`popup popup_fullsize ${card.name && 'popup_opened'}`}>
       <figure className='popup__figure'>
         <button
           className='popup__btn-close btn-opacity'

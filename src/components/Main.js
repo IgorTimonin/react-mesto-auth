@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import userPic from '../images/user.png';
 import { api } from '../utils/Api.js';
 import Card from './Card';
@@ -12,24 +12,20 @@ export default function Main({
   const [userName, setuserName] = useState('пользователь');
   const [userDescription, setuserDescription] = useState('профессия');
   const [userAvatar, setuserAvatar] = useState(userPic);
-
-  useEffect(() => {
-    api
-      .getUserData('https://nomoreparties.co/v1/cohort-41/users/me')
-      .then((card) => {
-        setuserName(card.name);
-        setuserDescription(card.about);
-        setuserAvatar(card.avatar);
-      });
-  }, []);
-
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
     api.getInitialCards().then((data) => {
       setCards(data);
-    });
-  }, []);
+      api
+        .getUserData('https://nomoreparties.co/v1/cohort-41/users/me')
+        .then((card) => {
+          setuserName(card.name);
+          setuserDescription(card.about);
+          setuserAvatar(card.avatar);
+        });
+    }, []);
+  });
 
   return (
     <main>
@@ -60,8 +56,8 @@ export default function Main({
       </section>
       <section className='gallery'>
         <ul className='gallery__cards'>
-          {cards.map((card, i) => (
-            <Card key={i} card={card} onCardClick={onCardClick} />
+          {cards.map((card) => (
+            <Card key={card._id} card={card} onCardClick={onCardClick} />
           ))}
         </ul>
       </section>
