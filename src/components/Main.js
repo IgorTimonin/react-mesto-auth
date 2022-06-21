@@ -18,6 +18,16 @@ export default function Main({
     }, []);
   });
 
+  function handleCardLike(card) {
+    // Проверяем, есть ли уже лайк на этой карточке
+    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+
+    // Отправляем запрос в API и получаем обновлённые данные карточки
+    api.likeSwitcher(card._id, isLiked).then((newCard) => {
+      setCards((data) => data.map((c) => (c._id === card._id ? newCard : c)));
+    });
+  };
+
   return (
     <main>
       <section className='profile'>
@@ -48,7 +58,12 @@ export default function Main({
       <section className='gallery'>
         <ul className='gallery__cards'>
           {cards.map((card) => (
-            <Card key={card._id} card={card} onCardClick={onCardClick} />
+            <Card
+              key={card._id}
+              card={card}
+              onCardClick={onCardClick}
+              onCardLike={handleCardLike}
+            />
           ))}
         </ul>
       </section>
