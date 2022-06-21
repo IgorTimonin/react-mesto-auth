@@ -1,16 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../index.css';
+import userPic from '../images/user.png';
 import Footer from './Footer';
 import Header from './Header';
 import ImagePopup from './ImagePopup';
 import Main from './Main';
 import PopupWithForm from './PopupWithForm';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import { api } from '../utils/Api.js';
+
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [selectedCard, setselectedCard] = useState({});
+  const [currentUser, setCurrentUser] = useState({name: 'пользователь', about: 'профессия', avatar: userPic });
+
+  useEffect(() => {
+    api.getUserData('https://nomoreparties.co/v1/cohort-41/users/me')
+      .then((userData) => { 
+        setCurrentUser(userData)
+      });
+  }, []);
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -36,6 +48,9 @@ function App() {
   };
 
   return (
+    <CurrentUserContext.Provider
+    value={currentUser}
+  >
     <div>
       <Header />
       <Main
@@ -148,7 +163,9 @@ function App() {
       </PopupWithForm>
       <ImagePopup card={selectedCard} onClose={closeAllPopups} />
     </div>
+    </CurrentUserContext.Provider>
   );
+  
 }
 
 export default App;
