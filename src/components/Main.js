@@ -28,6 +28,10 @@ export default function Main({
     });
   };
 
+  function handleCardDelete(card) {
+    api.deleteCard(card._id).then((newCard) => {setCards((data) => data.filter((c) => (c._id === card._id ? newCard : c)))})
+  };
+
   return (
     <main>
       <section className='profile'>
@@ -63,6 +67,7 @@ export default function Main({
               card={card}
               onCardClick={onCardClick}
               onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete}
             />
           ))}
         </ul>
