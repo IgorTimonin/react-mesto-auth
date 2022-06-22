@@ -9,6 +9,7 @@ import PopupWithForm from './PopupWithForm';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { api } from '../utils/Api.js';
 import EditProfilePopup from './EditProfilePopup';
+import EditAvatarPopup from './EditAvatarPopup';
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -16,12 +17,12 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [selectedCard, setselectedCard] = useState({});
   const [currentUser, setCurrentUser] = useState({name: 'пользователь', about: 'профессия', avatar: userPic });
+  const userDataTargetUrl = 'https://nomoreparties.co/v1/cohort-41/users/me';
 
   useEffect(() => {
-    api.getUserData('https://nomoreparties.co/v1/cohort-41/users/me')
-      .then((userData) => { 
-        setCurrentUser(userData)
-      });
+    api.getUserData(userDataTargetUrl).then((userData) => {
+      setCurrentUser(userData);
+    });
   }, []);
 
   const handleEditAvatarClick = () => {
@@ -48,10 +49,19 @@ function App() {
   };
 
   const handleUpdateUser = (userData) => {
-    api.setUserData('https://nomoreparties.co/v1/cohort-41/users/me', userData).then((newUserInfo) => {
+    api.setUserData(userDataTargetUrl, userData).then((newUserInfo) => {
       setCurrentUser(newUserInfo);
       closeAllPopups();
-    })
+    });
+  };
+
+  const handleUpdateAvatar = (avatarLink) => {
+    api
+      .setUserAvatar(userDataTargetUrl, avatarLink.avatar)
+      .then((newUserInfo) => {
+        setCurrentUser(newUserInfo);
+        closeAllPopups();
+      });
   };
 
   return (
@@ -73,27 +83,11 @@ function App() {
           // isOpen={}
         />
 
-        <PopupWithForm
-          name='avatar'
-          title='Обновить аватар'
-          btnText='Сохранить'
+        <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
-        >
-          <input
-            id='avatar-url-input'
-            className='popup__field popup__field_newcard-adress popup__form-input'
-            type='url'
-            value=''
-            name='avatarLink'
-            placeholder='Ссылка на картинку'
-            required
-            autocomplete='off'
-          />
-          <span className='avatar-url-input-error input-error'>
-            Введите адрес аватара.
-          </span>
-        </PopupWithForm>
+          onUpdateAvatar={handleUpdateAvatar}
+        />
 
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}

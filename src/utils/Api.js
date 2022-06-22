@@ -34,12 +34,12 @@ class Api {
     }).then(resultHandler);
   }
 
-  setUserAvatar(targetApiUrl, userData) {
+  setUserAvatar(targetApiUrl, avatar) {
     return fetch(targetApiUrl + '/avatar', {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
-        avatar: userData,
+        avatar
       }),
     }).then(resultHandler);
   }
