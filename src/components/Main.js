@@ -22,14 +22,19 @@ export default function Main({
     // Проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
-    // Отправляем запрос в API и получаем обновлённые данные карточки
-    api.likeSwitcher(card._id, isLiked).then((newCard) => {
-      setCards((data) => data.map((c) => (c._id === card._id ? newCard : c)));
+    // Отправляем запрос в API и получаем обновлённые данные карточек
+    api.likeSwitcher(card._id, isLiked).then((newCards) => {
+      setCards((data) => data.map((c) => (c._id === card._id ? newCards : c)));
     });
   };
 
   function handleCardDelete(card) {
-    api.deleteCard(card._id).then((newCard) => {setCards((data) => data.filter((c) => (c._id === card._id ? newCard : c)))})
+    api.deleteCard(card._id).then((newCards) =>
+      // Отправляем запрос на удаление в API, получаем обновлённые данные карточек, фильтром создаём новый объект карточек, без карточки с удалённым id
+      setCards((data) =>
+        data.filter((c) => (c._id === card._id ? newCards : c))
+      )
+    );
   };
 
   return (
