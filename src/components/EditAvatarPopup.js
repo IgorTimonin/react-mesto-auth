@@ -30,7 +30,7 @@ export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
         name='avatarLink'
         placeholder='Ссылка на картинку'
         required
-        autocomplete='off'
+        autoComplete='off'
       />
       <span className='avatar-url-input-error input-error'>
         Введите адрес аватара.

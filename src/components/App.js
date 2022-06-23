@@ -5,15 +5,17 @@ import Footer from './Footer';
 import Header from './Header';
 import ImagePopup from './ImagePopup';
 import Main from './Main';
-import PopupWithForm from './PopupWithForm';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { api } from '../utils/Api.js';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
+import ConfirmDeletePopup from './ConfirmDeletePopup';
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [isConfirmDeletePopupOpen, setIsConfirmDeletePopupOpen] =
+    useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [selectedCard, setselectedCard] = useState({});
@@ -22,6 +24,7 @@ function App() {
     about: 'профессия',
     avatar: userPic,
   });
+  const [currentCard, setCurrentCard] = useState({});
   const userDataTargetUrl = 'https://nomoreparties.co/v1/cohort-41/users/me';
   const [cards, setCards] = useState([]);
 
@@ -41,13 +44,14 @@ function App() {
     });
   }
 
-  function handleCardDelete(card) {
-    api.deleteCard(card._id).then((newCards) =>
+  function handleCardDeleteConfirm() {
+    api.deleteCard(currentCard._id).then((newCards) =>
       // Отправляем запрос на удаление в API, получаем обновлённые данные карточек, фильтром создаём новый объект карточек, без карточки с удалённым id
       setCards((data) =>
-        data.filter((c) => (c._id === card._id ? newCards : c))
+        data.filter((c) => (c._id === currentCard._id ? newCards : c))
       )
     );
+    closeAllPopups();
   }
 
   useEffect(() => {
@@ -58,6 +62,11 @@ function App() {
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
+  };
+
+  const handleDeleteClick = (cardId) => {
+    setCurrentCard(cardId)
+    setIsConfirmDeletePopupOpen(true);
   };
 
   const handleEditProfileClick = () => {
@@ -72,6 +81,7 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
+    setIsConfirmDeletePopupOpen(false);
     handleCardClick('');
   };
 
@@ -116,15 +126,14 @@ function App() {
           onCardClick={handleCardClick}
           cards={cards}
           onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
+          onCardDelete={handleDeleteClick}
         />
         <Footer />
 
-        <PopupWithForm
-          name='submit'
-          title='Вы уверены?'
-          btnText='Сохранить'
-          // isOpen={}
+        <ConfirmDeletePopup
+          isOpen={isConfirmDeletePopupOpen}
+          onClose={closeAllPopups}
+          onConfirmCardDelete={handleCardDeleteConfirm}
         />
 
         <EditAvatarPopup

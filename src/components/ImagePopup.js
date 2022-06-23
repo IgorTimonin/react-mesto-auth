@@ -7,7 +7,7 @@ function ImagePopup({ card, onClose }) {
           type='button'
           onClick={onClose}
         ></button>
-        <img className='popup__full-photo' src={card.link} alt={card.name} />
+        <img className='popup__full-photo' src={`${card.link}`} alt={`${card.name}`} />
         <figcaption className='popup__figcaption'>{card.name}</figcaption>
       </figure>
     </div>

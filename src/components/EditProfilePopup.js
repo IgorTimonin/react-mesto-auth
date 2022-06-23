@@ -46,10 +46,10 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         onChange={handleChangeName}
         name='name'
         placeholder='Введите имя'
-        minlength='2'
-        maxlength='40'
+        minLength='2'
+        maxLength='40'
         required
-        autocomplete='off'
+        autoComplete='off'
       />
       <span className='name-input-error input-error'>
         Вы пропустили это поле.
@@ -62,10 +62,10 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         onChange={handleChangeDescription}
         name='about'
         placeholder='Введите род деятельности'
-        minlength='2'
-        maxlength='200'
+        minLength='2'
+        maxLength='200'
         required
-        autocomplete='off'
+        autoComplete='off'
       />
       <span className='job-input-error input-error'>
         Вы пропустили это поле.

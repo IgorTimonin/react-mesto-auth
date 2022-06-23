@@ -39,10 +39,10 @@ export default function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
         onChange={handleChangeNameCardTitle}
         name='cardName'
         placeholder='Название'
-        minlength='2'
-        maxlength='30'
+        minLength='2'
+        maxLength='30'
         required
-        autocomplete='off'
+        autoComplete='off'
       />
       <span className='newcard-name-input-error input-error'>
         Вы пропустили это поле.
@@ -56,7 +56,7 @@ export default function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
         name='cardAdress'
         placeholder='Ссылка на картинку'
         required
-        autocomplete='off'
+        autoComplete='off'
       />
       <span className='newcard-url-input-error input-error'>
         Введите адрес сайта.

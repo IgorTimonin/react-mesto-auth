@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
+
   function handleLikeClick() {
     onCardLike(card);
   }
@@ -31,8 +32,8 @@ export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
       ></button>
       <img
         className='gallery__img'
-        src={card.link}
-        alt={card.name}
+        src={`${card.link}`}
+        alt={`${card.name}`}
         onClick={handleClick}
       />
       <div className='gallery__text'>
