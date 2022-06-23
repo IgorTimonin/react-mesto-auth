@@ -6,7 +6,7 @@ function ImagePopup({ card, onClose }) {
           className='popup__btn-close btn-opacity'
           type='button'
           onClick={onClose}
-        ></button>
+        />
         <img className='popup__full-photo' src={`${card.link}`} alt={`${card.name}`} />
         <figcaption className='popup__figcaption'>{card.name}</figcaption>
       </figure>

@@ -30,7 +30,7 @@ export default function Main({
               className='profile__edit-btn btn-opacity'
               type='button'
               onClick={onEditProfile}
-            ></button>
+            />
           </div>
           <p className='profile__job'>{currentUser.about}</p>
         </div>
@@ -38,7 +38,7 @@ export default function Main({
           className='profile__add-btn btn-opacity'
           type='button'
           onClick={onAddPlace}
-        ></button>
+        />
       </section>
       <section className='gallery'>
         <ul className='gallery__cards'>

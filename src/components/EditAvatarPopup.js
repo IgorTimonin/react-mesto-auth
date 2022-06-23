@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
 
 export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {

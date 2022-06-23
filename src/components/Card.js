@@ -43,7 +43,7 @@ export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
             className={cardLikeBtnClassName}
             type='button'
             onClick={handleLikeClick}
-          ></button>
+          />
           <div className='gallery__like-qty'>{card.likes.length}</div>
         </div>
       </div>

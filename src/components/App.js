@@ -29,9 +29,12 @@ function App() {
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    api.getInitialCards().then((cardsList) => {
-      setCards(cardsList);
-    }, []);
+    api
+      .getInitialCards()
+      .then((cardsList) => {
+        setCards(cardsList);
+      }, [])
+      .catch((err) => console.log(err));;
   });
 
   function handleCardLike(card) {
@@ -39,26 +42,37 @@ function App() {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
     // Отправляем запрос в API и получаем обновлённые данные карточек
-    api.likeSwitcher(card._id, isLiked).then((newCards) => {
-      setCards((data) => data.map((c) => (c._id === card._id ? newCards : c)));
-    });
+    api
+      .likeSwitcher(card._id, isLiked)
+      .then((newCards) => {
+        setCards((data) =>
+          data.map((c) => (c._id === card._id ? newCards : c))
+        );
+      })
+      .catch((err) => console.log(err));
   }
 
   function handleCardDeleteConfirm() {
-    api.deleteCard(currentCard._id).then((newCards) =>
-      // Отправляем запрос на удаление в API, получаем обновлённые данные карточек, фильтром создаём новый объект карточек, без карточки с удалённым id
-      setCards((data) =>
-        data.filter((c) => (c._id === currentCard._id ? newCards : c))
-      )
-    );
-    closeAllPopups();
+    
+      api
+        .deleteCard(currentCard._id)
+        .then((newCards) =>
+          // Отправляем запрос на удаление в API, получаем обновлённые данные карточек, фильтром создаём новый объект карточек, без карточки с удалённым id
+          setCards((data) =>
+            data.filter((c) => (c._id === currentCard._id ? newCards : c))
+          )
+        ).then(() => {closeAllPopups()})
+        .catch((err) => console.log(err))
   }
 
   useEffect(() => {
-    api.getUserData(userDataTargetUrl).then((userData) => {
-      setCurrentUser(userData);
-    });
-  }, []);
+    api
+      .getUserData(userDataTargetUrl)
+      .then((userData) => {
+        setCurrentUser(userData);
+      })
+      .catch((err) => console.log(err));
+  }, [])
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -90,10 +104,13 @@ function App() {
   };
 
   const handleUpdateUser = (userData) => {
-    api.setUserData(userDataTargetUrl, userData).then((newUserInfo) => {
-      setCurrentUser(newUserInfo);
-      closeAllPopups();
-    });
+    api
+      .setUserData(userDataTargetUrl, userData)
+      .then((newUserInfo) => {
+        setCurrentUser(newUserInfo);
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleUpdateAvatar = (avatarLink) => {
@@ -101,15 +118,21 @@ function App() {
       .setUserAvatar(userDataTargetUrl, avatarLink.avatar)
       .then((newUserInfo) => {
         setCurrentUser(newUserInfo);
+      })
+      .then(() => {
         closeAllPopups();
-      });
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleAddPlaceSubmit = (cardData) => {
-    api.setNewCard(cardData).then((newCard) => {
-      setCards([newCard, ...cards]);
-      closeAllPopups();
-    });
+    api
+      .setNewCard(cardData)
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err));
   };
 
   return (

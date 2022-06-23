@@ -19,6 +19,6 @@ export default function ConfirmDeletePopup({
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handlerConfirm}
-    ></PopupWithForm>
+    />
   );
 }
