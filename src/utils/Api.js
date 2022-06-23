@@ -39,7 +39,7 @@ class Api {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
-        avatar
+        avatar,
       }),
     }).then(resultHandler);
   }
@@ -49,8 +49,8 @@ class Api {
       method: 'POST',
       headers: this._headers,
       body: JSON.stringify({
-        name: cardData.cardName,
-        link: cardData.cardAdress,
+        name: cardData.cardTitle,
+        link: cardData.cardLink,
       }),
     }).then(resultHandler);
   }

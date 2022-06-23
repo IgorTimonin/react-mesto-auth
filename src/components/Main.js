@@ -1,6 +1,5 @@
-import { useState, useEffect, useContext } from 'react';
+import { useContext } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import { api } from '../utils/Api.js';
 import Card from './Card';
 
 export default function Main({
@@ -8,35 +7,12 @@ export default function Main({
   onAddPlace,
   onEditAvatar,
   onCardClick,
+  cards,
+  onCardLike,
+  onCardDelete,
 }) {
-  const [cards, setCards] = useState([]);
   const currentUser = useContext(CurrentUserContext);
-
-  useEffect(() => {
-    api.getInitialCards().then((data) => {
-      setCards(data);
-    }, []);
-  });
-
-  function handleCardLike(card) {
-    // Проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
-
-    // Отправляем запрос в API и получаем обновлённые данные карточек
-    api.likeSwitcher(card._id, isLiked).then((newCards) => {
-      setCards((data) => data.map((c) => (c._id === card._id ? newCards : c)));
-    });
-  };
-
-  function handleCardDelete(card) {
-    api.deleteCard(card._id).then((newCards) =>
-      // Отправляем запрос на удаление в API, получаем обновлённые данные карточек, фильтром создаём новый объект карточек, без карточки с удалённым id
-      setCards((data) =>
-        data.filter((c) => (c._id === card._id ? newCards : c))
-      )
-    );
-  };
-
+  
   return (
     <main>
       <section className='profile'>
@@ -71,8 +47,8 @@ export default function Main({
               key={card._id}
               card={card}
               onCardClick={onCardClick}
-              onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete}
+              onCardLike={onCardLike}
+              onCardDelete={onCardDelete}
             />
           ))}
         </ul>

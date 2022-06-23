@@ -10,14 +10,45 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { api } from '../utils/Api.js';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
+import AddPlacePopup from './AddPlacePopup';
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [selectedCard, setselectedCard] = useState({});
-  const [currentUser, setCurrentUser] = useState({name: 'пользователь', about: 'профессия', avatar: userPic });
+  const [currentUser, setCurrentUser] = useState({
+    name: 'пользователь',
+    about: 'профессия',
+    avatar: userPic,
+  });
   const userDataTargetUrl = 'https://nomoreparties.co/v1/cohort-41/users/me';
+  const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    api.getInitialCards().then((cardsList) => {
+      setCards(cardsList);
+    }, []);
+  });
+
+  function handleCardLike(card) {
+    // Проверяем, есть ли уже лайк на этой карточке
+    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+
+    // Отправляем запрос в API и получаем обновлённые данные карточек
+    api.likeSwitcher(card._id, isLiked).then((newCards) => {
+      setCards((data) => data.map((c) => (c._id === card._id ? newCards : c)));
+    });
+  }
+
+  function handleCardDelete(card) {
+    api.deleteCard(card._id).then((newCards) =>
+      // Отправляем запрос на удаление в API, получаем обновлённые данные карточек, фильтром создаём новый объект карточек, без карточки с удалённым id
+      setCards((data) =>
+        data.filter((c) => (c._id === card._id ? newCards : c))
+      )
+    );
+  }
 
   useEffect(() => {
     api.getUserData(userDataTargetUrl).then((userData) => {
@@ -64,6 +95,16 @@ function App() {
       });
   };
 
+  const handleAddPlaceSubmit = (cardData) => {
+    api.setNewCard(cardData).then((newCard) => {
+      setCards([newCard, ...cards]);
+
+      // cardTitle = '';
+      // cardLink = '';
+      closeAllPopups();
+    });
+  };
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div>
@@ -73,6 +114,9 @@ function App() {
           onAddPlace={handleAddPlaceClick}
           onEditAvatar={handleEditAvatarClick}
           onCardClick={handleCardClick}
+          cards={cards}
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}
         />
         <Footer />
 
@@ -95,47 +139,16 @@ function App() {
           onUpdateUser={handleUpdateUser}
         />
 
-        <PopupWithForm
-          name='add-card'
-          title='Новое место'
-          btnText='Создать'
+        <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
-        >
-          <input
-            id='newcard-name-input'
-            className='popup__field popup__field_newcard-name popup__form-input'
-            type='text'
-            value=''
-            name='cardName'
-            placeholder='Название'
-            minlength='2'
-            maxlength='30'
-            required
-            autocomplete='off'
-          />
-          <span className='newcard-name-input-error input-error'>
-            Вы пропустили это поле.
-          </span>
-          <input
-            id='newcard-url-input'
-            className='popup__field popup__field_newcard-adress popup__form-input'
-            type='url'
-            value=''
-            name='cardAdress'
-            placeholder='Ссылка на картинку'
-            required
-            autocomplete='off'
-          />
-          <span className='newcard-url-input-error input-error'>
-            Введите адрес сайта.
-          </span>
-        </PopupWithForm>
+          onAddPlace={handleAddPlaceSubmit}
+        />
+
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
       </div>
     </CurrentUserContext.Provider>
   );
-  
 }
 
 export default App;
