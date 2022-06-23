@@ -108,9 +108,6 @@ function App() {
   const handleAddPlaceSubmit = (cardData) => {
     api.setNewCard(cardData).then((newCard) => {
       setCards([newCard, ...cards]);
-
-      // cardTitle = '';
-      // cardLink = '';
       closeAllPopups();
     });
   };
