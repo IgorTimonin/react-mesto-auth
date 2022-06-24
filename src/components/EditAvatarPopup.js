@@ -10,8 +10,11 @@ export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
     onUpdateAvatar({
       avatar: inputRef.current.value,
     });
-    inputRef.current.value = '';
   }
+
+    useEffect(() => {
+      inputRef.current.value = '';
+    }, [isOpen]);
 
   return (
     <PopupWithForm
@@ -31,7 +34,7 @@ export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
         placeholder='Ссылка на картинку'
         required
         autoComplete='off'
-      />
+        defaultValue=''      />
       <span className='avatar-url-input-error input-error'>
         Введите адрес аватара.
       </span>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
@@ -29,6 +29,27 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
     });
   }
 
+  useEffect(() => {
+    setName(currentUser.name);
+    setDescription(currentUser.about);
+  }, [isOpen]);
+
+  function clearInput(e) {
+    e.target.name == 'description' ? setDescription('') : setName('');
+  }
+
+  function prevInputName() {
+     if (!name) {
+       setName(currentUser.name);
+     } 
+  }
+
+    function prevInputDescription() {
+      if (!description) {
+        setDescription(currentUser.about);
+      }
+    }
+
   return (
     <PopupWithForm
       name='profile'
@@ -44,6 +65,8 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         type='text'
         value={name}
         onChange={handleChangeName}
+        onClick={clearInput}
+        onBlur={prevInputName}
         name='name'
         placeholder='Введите имя'
         minLength='2'
@@ -60,8 +83,10 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         type='text'
         value={description}
         onChange={handleChangeDescription}
-        name='about'
-        placeholder='Введите род деятельности'
+        onClick={clearInput}
+        onBlur={prevInputDescription}
+        name='description'
+        placeholder='О себе'
         minLength='2'
         maxLength='200'
         required
