@@ -35,7 +35,7 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   }, [isOpen]);
 
   function clearInput(e) {
-    e.target.name == 'description' ? setDescription('') : setName('');
+    e.target.name === 'description' ? setDescription('') : setName('');
   }
 
   function prevInputName() {

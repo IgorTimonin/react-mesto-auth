@@ -1,10 +1,17 @@
-export default function Header() {
+import { Link } from "react-router-dom";
+
+export default function Header(props) {
   return (
     <header className='header'>
-      <a className='header__logo' href='#' />
+      <Link className='header__logo' to='/' />
       <div className='header__user-block'>
-        <div className='header__user-email'>useremail@email.com</div>
-        <button className='header__user-btn'>Выход</button>
+        <div className='header__user-email btn-opacity'>{props.userEmail}</div>
+        <Link
+          className='header__user-btn btn-opacity'
+          to={props.headerLinkPath}
+        >
+          {props.headerBtnText}
+        </Link>
       </div>
     </header>
   );
