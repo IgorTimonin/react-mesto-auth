@@ -15,7 +15,6 @@ import ConfirmDeletePopup from './ConfirmDeletePopup';
 import Login from './Login.js';
 import Register from './Register.js';
 import ProtectedRoute from './ProtectedRoute';
-import PageWithForm from './PageWithForm';
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -32,7 +31,7 @@ function App() {
   const [currentCard, setCurrentCard] = useState({});
   const userDataTargetUrl = 'https://nomoreparties.co/v1/cohort-41/users/me';
   const [cards, setCards] = useState([]);
-  const [loggedIn, setLoggenIn] = useState(false)
+  const [loggedIn, setLoggenIn] = useState(true)
 
   useEffect(() => {
     api
@@ -142,58 +141,55 @@ function App() {
 return (
   <Switch>
     <CurrentUserContext.Provider value={currentUser}>
-      <Route path='/sign-in'>
-        <Login />
-      </Route>
-      <Route path='/sign-up'>
+      {!loggedIn && <Route path='/sign-in'><Login /></Route>}
+      {!loggedIn && <Route path='/sign-up'>
         <Register />
-      </Route>
+      </Route>}
       {/* <ProtectedRoute path='/'> */}
       <Route exect path='/'>
-        {loggedIn && <div>
-          <Header
-            // userEmail={userEmail}
-            headerBtnText='Выйти'
-          />
-          <Main
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onEditAvatar={handleEditAvatarClick}
-            onCardClick={handleCardClick}
-            cards={cards}
-            onCardLike={handleCardLike}
-            onCardDelete={handleDeleteClick}
-          />
-          <Footer />
+        {loggedIn && (
+          <div>
+            <Header
+              // userEmail={userEmail}
+              headerBtnText='Выйти'
+            />
+            <Main
+              onEditProfile={handleEditProfileClick}
+              onAddPlace={handleAddPlaceClick}
+              onEditAvatar={handleEditAvatarClick}
+              onCardClick={handleCardClick}
+              cards={cards}
+              onCardLike={handleCardLike}
+              onCardDelete={handleDeleteClick}
+            />
+            <Footer />
 
-          <ConfirmDeletePopup
-            isOpen={isConfirmDeletePopupOpen}
-            onClose={closeAllPopups}
-            onConfirmCardDelete={handleCardDeleteConfirm}
-          />
+            <ConfirmDeletePopup
+              isOpen={isConfirmDeletePopupOpen}
+              onClose={closeAllPopups}
+              onConfirmCardDelete={handleCardDeleteConfirm}
+            />
 
-          <EditAvatarPopup
-            isOpen={isEditAvatarPopupOpen}
-            onClose={closeAllPopups}
-            onUpdateAvatar={handleUpdateAvatar}
-          />
+            <EditAvatarPopup
+              isOpen={isEditAvatarPopupOpen}
+              onClose={closeAllPopups}
+              onUpdateAvatar={handleUpdateAvatar}
+            />
 
-          <EditProfilePopup
-            isOpen={isEditProfilePopupOpen}
-            onClose={closeAllPopups}
-            onUpdateUser={handleUpdateUser}
-          />
+            <EditProfilePopup
+              isOpen={isEditProfilePopupOpen}
+              onClose={closeAllPopups}
+              onUpdateUser={handleUpdateUser}
+            />
 
-          <AddPlacePopup
-            isOpen={isAddPlacePopupOpen}
-            onClose={closeAllPopups}
-            onAddPlace={handleAddPlaceSubmit}
-          />
-          <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-        </div>}
-      </Route>
-      <Route path='/test'>
-        <p>ТЫ в /test</p>
+            <AddPlacePopup
+              isOpen={isAddPlacePopupOpen}
+              onClose={closeAllPopups}
+              onAddPlace={handleAddPlaceSubmit}
+            />
+            <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+          </div>
+        )}
       </Route>
       {/* </ProtectedRoute> */}
 
