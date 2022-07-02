@@ -5,7 +5,11 @@ export default function Header(props) {
     <header className='header'>
       <Link className='header__logo' to='/' />
       <div className='header__user-block'>
-        <div className='header__user-email btn-opacity'>{props.userEmail}</div>
+        {props.loggedIn && (
+          <div className='header__user-email btn-opacity'>
+            {props.userEmail}
+          </div>
+        )}
         <Link
           className='header__user-btn btn-opacity'
           to={props.headerLinkPath}

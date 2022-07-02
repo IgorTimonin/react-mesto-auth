@@ -1,6 +1,31 @@
+import React, { useState } from 'react';
+
 import Header from "./Header";
 
 export default function PageWithForm(props) {
+
+const [email, setEmail] = useState('');
+const [password, setPassword] = useState('');
+
+  function handleSetEmail(e) {
+  setEmail(e.target.value);
+  }
+
+  function handleSetPassword(e) {
+  setPassword(e.target.value);
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    props.onSubmit({
+      password,
+      email,
+    });
+    setEmail('');
+    setPassword('')
+  }
+
   return (
     <div className='auth'>
       <Header
@@ -10,33 +35,35 @@ export default function PageWithForm(props) {
       <div className='auth__container'>
         <h2 className='auth__title'>{props.title}</h2>
         <form
-          onSubmit={props.onSubmit}
+          onSubmit={handleSubmit}
           className={`auth__form auth__${props.name}-form popup__form`}
           name='Form'
           action='#'
           noValidate
         >
           <input
-            id='user-email-input'
+            id='username'
             className='auth__field popup__form-input'
             type='email'
-            //   value=''
-            //   onChange={}
+            value={email}
+            onChange={handleSetEmail}
             name='userEmail'
             placeholder='Email'
+            autoComplete='username'
             required
           />
           <span className='user-email-input-error input-error_auth'>
             Введите email.
           </span>
           <input
-            id='user-password-input'
+            id={props.inputId}
             className='auth__field popup__form-input'
             type='password'
-            //   value=''
-            //   onChange={}
+            value={password}
+            onChange={handleSetPassword}
             name='userPassword'
             placeholder='Пароль'
+            autoComplete='current-password'
             required
           />
           <span className='user-password-input-error input-error_auth'>

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PageWithForm from './PageWithForm';
 
-export default function Register() {
+export default function Register({ onSignUp }) {
   return (
     <PageWithForm
       title='Регистрация'
@@ -10,7 +10,8 @@ export default function Register() {
       name='register'
       headerBtnText='Войти'
       headerLinkPath='/sign-in'
-      // onSubmit={}
+      inputId='new-password'
+      onSubmit={onSignUp}
     >
       <p className='auth__login-text'>
         Уже зарегистрированы?

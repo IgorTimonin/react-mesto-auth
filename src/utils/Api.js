@@ -9,6 +9,18 @@ class Api {
   constructor(baseUrl, headers) {
     this._baseUrl = baseUrl;
     this._headers = headers;
+    this.baseAuthUrl = 'https://auth.nomoreparties.co';
+  }
+
+  signInSignUp(endpoint, password, email) {
+    return fetch(this.baseAuthUrl + `${endpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(
+        password,
+        email,
+      ),
+    }).then(resultHandler);
   }
 
   getInitialCards() {
