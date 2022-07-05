@@ -1,13 +1,20 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+
+// const ProtectedRoute = (props) => {
+//   const nav = useNavigate()
+//   const appComp = props.children
+//   return (
+//     <Route>
+//       {() => (props.loggedIn ? appComp : nav('/sign-in'))}
+//     </Route>
+//   );
+// };
 
 const ProtectedRoute = (props) => {
-  const appComp = props.children
-  return (
-    <Route>
-      {() => (props.loggedIn ? appComp : <Redirect to='/sign-up' />)}
-    </Route>
-  );
+  // const nav = useNavigate();
+  const appComp = props.children;
+  return props.loggedIn ? appComp : <Navigate to='/sign-in' />;
 };
 
 export default ProtectedRoute;
