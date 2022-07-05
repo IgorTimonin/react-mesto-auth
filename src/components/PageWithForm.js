@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-
+import { useNavigate } from 'react-router';
 import Header from "./Header";
 
 export default function PageWithForm(props) {
 
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
+const nav = useNavigate();
 
   function handleSetEmail(e) {
   setEmail(e.target.value);
@@ -26,11 +27,15 @@ const [password, setPassword] = useState('');
     setPassword('')
   }
 
+  function HandlerHeaderBtn() {
+    nav(props.headerLinkPath);
+  }   
+
   return (
     <div className='auth'>
       <Header
         headerBtnText={props.headerBtnText}
-        headerLinkPath={props.headerLinkPath}
+        headerBtnAction={HandlerHeaderBtn}
       />
       <div className='auth__container'>
         <h2 className='auth__title'>{props.title}</h2>

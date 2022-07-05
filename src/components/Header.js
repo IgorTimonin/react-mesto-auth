@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 export default function Header(props) {
+
   return (
     <header className='header'>
       <Link className='header__logo' to='/' />
@@ -10,12 +11,12 @@ export default function Header(props) {
             {props.userEmail}
           </div>
         )}
-        <Link
+        <button
           className='header__user-btn btn-opacity'
-          to={props.headerLinkPath}
+          onClick={props.headerBtnAction}
         >
           {props.headerBtnText}
-        </Link>
+        </button>
       </div>
     </header>
   );

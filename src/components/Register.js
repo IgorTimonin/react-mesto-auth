@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PageWithForm from './PageWithForm';
 
 export default function Register({ onSignUp }) {
+     
   return (
     <PageWithForm
       title='Регистрация'

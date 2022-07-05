@@ -55,6 +55,11 @@ function App() {
       .catch((err) => console.log(err));
   }
 
+    function logUot() {
+      localStorage.removeItem('jwt');
+      nav('/sign-in');
+    }
+
   useEffect(() => {
     api
       .getInitialCards()
@@ -175,7 +180,7 @@ return (
                 // userEmail={userEmail}
                 loggedIn={loggedIn}
                 headerBtnText='Выйти'
-                headerLinkPath='/sign-in'
+                headerBtnAction={logUot}
               />
               <Main
                 onEditProfile={handleEditProfileClick}
