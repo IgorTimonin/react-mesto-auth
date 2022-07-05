@@ -54,6 +54,18 @@
   max-width: 880px;
 }
 
+.popup__btn_hide {
+  display: none;
+}
+
+.infoPicture_ok {
+  background-image: url(/src/images/Ok.svg);
+}
+
+.infoPicture_error {
+  background-image: url(/src/images/Error.svg);
+}
+
 .header__user-btn {
   background-color: #000;
   border: none;

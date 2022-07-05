@@ -8,6 +8,7 @@ import ImagePopup from './ImagePopup';
 import Main from './Main';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { api } from '../utils/Api.js';
+import { apiAuth } from '../utils/ApiAuth.js';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
@@ -15,8 +16,10 @@ import ConfirmDeletePopup from './ConfirmDeletePopup';
 import Login from './Login.js';
 import Register from './Register.js';
 import ProtectedRoute from './ProtectedRoute';
+import InfoToolTip from './InfoTooltip';
 
 function App() {
+  const [isInfoToolTipOpen, setIsInfoToolTipOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isConfirmDeletePopupOpen, setIsConfirmDeletePopupOpen] =
     useState(false);
@@ -36,29 +39,46 @@ function App() {
   const nav = useNavigate();
 
   function onSignUp(email, password) {
-    api
-      .signInSignUp('/signup', email, password).then((res) => 
-      {if (res.statusCode !== 400) {nav('/sign-in');
-      }})
+    apiAuth.signInSignUp('/signup', email, password)
+      .then((res) => {
+        if (res.statusCode !== 400) {
+          const resStatus = 'ok'
+          InfoToolTip(
+            {isInfoToolTipOpen,
+            closeAllPopups,
+            resStatus})}
+          // nav('/sign-in');
+        else {
+          const resStatus = 'error'
+          InfoToolTip(
+            {isInfoToolTipOpen,
+            closeAllPopups,
+            resStatus})}
+        }
+  )
       .catch((err) => console.log(err));
   }
 
   function onSignIn(password, email) {
-    api
-      .signInSignUp('/signin', password, email)
-      .then(res => {
-        if(res.token) {
-        localStorage.setItem('jwt', res.token);
-        setLoggenIn(true);
-        nav('/');
-      }})
+    apiAuth.signInSignUp('/signin', password, email)
+      .then((res) => {
+        if (res.token) {
+          localStorage.setItem('jwt', res.token);
+          setLoggenIn(true);
+          nav('/');
+        }
+      })
       .catch((err) => console.log(err));
   }
 
     function logUot() {
+      setLoggenIn(false);
       localStorage.removeItem('jwt');
-      nav('/sign-in');
     }
+
+  // function registerStatus() {
+  //   console.log('');
+  // }
 
   useEffect(() => {
     api
@@ -122,6 +142,7 @@ function App() {
   };
 
   const closeAllPopups = () => {
+    setIsInfoToolTipOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
@@ -170,7 +191,6 @@ return (
     <Routes>
       <Route path='/sign-in' element={<Login onSignIn={onSignIn} />}></Route>
       <Route path='/sign-up' element={<Register onSignUp={onSignUp} />}></Route>
-      {/* <ProtectedRoute path='/' loggedIn={loggedIn}> */}
       <Route
         path='/'
         element={
@@ -192,6 +212,12 @@ return (
                 onCardDelete={handleDeleteClick}
               />
               <Footer />
+
+              {/* <InfoToolTip
+                isOpen={isInfoToolTipOpen}
+                onClose={closeAllPopups}
+                onSignUp={onSignUp}
+              /> */}
 
               <ConfirmDeletePopup
                 isOpen={isConfirmDeletePopupOpen}
@@ -218,7 +244,6 @@ return (
               />
               <ImagePopup card={selectedCard} onClose={closeAllPopups} />
             </div>
-            {/* </ProtectedRoute> */}
           </ProtectedRoute>
         }
       ></Route>

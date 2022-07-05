@@ -1,7 +1,9 @@
 export default function PopupWithForm(props) {
   return (
     <div
-      className={`popup popup-${props.name} ${(props.isOpen && 'popup_opened') ? 'popup_opened':''}`}
+      className={`popup popup-${props.name} ${
+        props.isOpen && 'popup_opened' ? 'popup_opened' : ''
+      }`}
     >
       <div className='popup__container'>
         <button
@@ -18,7 +20,12 @@ export default function PopupWithForm(props) {
           noValidate
         >
           {props.children}
-          <button className='popup__btn-save popup__form-submit' type='submit'>
+          <button
+            className={`popup__btn-save popup__form-submit ${
+              !props.btnText && 'popup__btn_hide'
+            }`}
+            type='submit'
+          >
             {props.btnText}
           </button>
         </form>
