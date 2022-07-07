@@ -16,10 +16,10 @@ import ConfirmDeletePopup from './ConfirmDeletePopup';
 import Login from './Login.js';
 import Register from './Register.js';
 import ProtectedRoute from './ProtectedRoute';
-import InfoToolTip from './InfoTooltip';
 
 function App() {
   const [isInfoToolTipOpen, setIsInfoToolTipOpen] = useState(false);
+  const [isRegStatus, setIsRegStatus] = useState('');
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isConfirmDeletePopupOpen, setIsConfirmDeletePopupOpen] =
     useState(false);
@@ -35,32 +35,27 @@ function App() {
   const userDataTargetUrl = 'https://nomoreparties.co/v1/cohort-41/users/me';
   const [cards, setCards] = useState([]);
   const [loggedIn, setLoggenIn] = useState(false);
-  const [message, setMessage] = useState('');
   const nav = useNavigate();
 
   function onSignUp(email, password) {
-    apiAuth.signInSignUp('/signup', email, password)
+    apiAuth
+      .signInSignUp('/signup', email, password)
       .then((res) => {
         if (res.statusCode !== 400) {
-          const resStatus = 'ok'
-          InfoToolTip(
-            {isInfoToolTipOpen,
-            closeAllPopups,
-            resStatus})}
+          setIsRegStatus('ok');
+          setIsInfoToolTipOpen(true);
           // nav('/sign-in');
-        else {
-          const resStatus = 'error'
-          InfoToolTip(
-            {isInfoToolTipOpen,
-            closeAllPopups,
-            resStatus})}
         }
-  )
-      .catch((err) => console.log(err));
+      })
+      .catch((err) => {
+        setIsRegStatus('error');
+        setIsInfoToolTipOpen(true);
+      });
   }
 
   function onSignIn(password, email) {
-    apiAuth.signInSignUp('/signin', password, email)
+    apiAuth
+      .signInSignUp('/signin', password, email)
       .then((res) => {
         if (res.token) {
           localStorage.setItem('jwt', res.token);
@@ -71,14 +66,14 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-    function logUot() {
-      setLoggenIn(false);
-      localStorage.removeItem('jwt');
-    }
+  function logUot() {
+    setLoggenIn(false);
+    localStorage.removeItem('jwt');
+  }
 
-  // function registerStatus() {
-  //   console.log('');
-  // }
+  function onClosedRedirect() {
+    nav('/sign-in')
+  }
 
   useEffect(() => {
     api
@@ -104,15 +99,18 @@ function App() {
   }
 
   function handleCardDeleteConfirm() {
-      api
-        .deleteCard(currentCard._id)
-        .then((newCards) =>
-          // Отправляем запрос на удаление в API, получаем обновлённые данные карточек, фильтром создаём новый объект карточек, без карточки с удалённым id
-          setCards((data) =>
-            data.filter((c) => (c._id === currentCard._id ? newCards : c))
-          )
-        ).then(() => {closeAllPopups()})
-        .catch((err) => console.log(err))
+    api
+      .deleteCard(currentCard._id)
+      .then((newCards) =>
+        // Отправляем запрос на удаление в API, получаем обновлённые данные карточек, фильтром создаём новый объект карточек, без карточки с удалённым id
+        setCards((data) =>
+          data.filter((c) => (c._id === currentCard._id ? newCards : c))
+        )
+      )
+      .then(() => {
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err));
   }
 
   useEffect(() => {
@@ -122,14 +120,14 @@ function App() {
         setCurrentUser(userData);
       })
       .catch((err) => console.log(err));
-  }, [])
+  }, []);
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
   };
 
   const handleDeleteClick = (cardId) => {
-    setCurrentCard(cardId)
+    setCurrentCard(cardId);
     setIsConfirmDeletePopupOpen(true);
   };
 
@@ -186,70 +184,74 @@ function App() {
       .catch((err) => console.log(err));
   };
 
-return (
-  <CurrentUserContext.Provider value={currentUser}>
-    <Routes>
-      <Route path='/sign-in' element={<Login onSignIn={onSignIn} />}></Route>
-      <Route path='/sign-up' element={<Register onSignUp={onSignUp} />}></Route>
-      <Route
-        path='/'
-        element={
-          <ProtectedRoute loggedIn={loggedIn}>
-            <div>
-              <Header
-                // userEmail={userEmail}
-                loggedIn={loggedIn}
-                headerBtnText='Выйти'
-                headerBtnAction={logUot}
-              />
-              <Main
-                onEditProfile={handleEditProfileClick}
-                onAddPlace={handleAddPlaceClick}
-                onEditAvatar={handleEditAvatarClick}
-                onCardClick={handleCardClick}
-                cards={cards}
-                onCardLike={handleCardLike}
-                onCardDelete={handleDeleteClick}
-              />
-              <Footer />
+  return (
+    <CurrentUserContext.Provider value={currentUser}>
+      <Routes>
+        <Route path='/sign-in' element={<Login onSignIn={onSignIn} />}></Route>
+        <Route
+          path='/sign-up'
+          element={
+            <Register
+              onSignUp={onSignUp}
+              isOpen={isInfoToolTipOpen}
+              onClose={onClosedRedirect}
+              regStatus={isRegStatus}
+            />
+          }
+        ></Route>
+        <Route
+          path='/'
+          element={
+            <ProtectedRoute loggedIn={loggedIn}>
+              <div>
+                <Header
+                  // userEmail={userEmail}
+                  loggedIn={loggedIn}
+                  headerBtnText='Выйти'
+                  headerBtnAction={logUot}
+                />
+                <Main
+                  onEditProfile={handleEditProfileClick}
+                  onAddPlace={handleAddPlaceClick}
+                  onEditAvatar={handleEditAvatarClick}
+                  onCardClick={handleCardClick}
+                  cards={cards}
+                  onCardLike={handleCardLike}
+                  onCardDelete={handleDeleteClick}
+                />
+                <Footer />
 
-              {/* <InfoToolTip
-                isOpen={isInfoToolTipOpen}
-                onClose={closeAllPopups}
-                onSignUp={onSignUp}
-              /> */}
+                <ConfirmDeletePopup
+                  isOpen={isConfirmDeletePopupOpen}
+                  onClose={closeAllPopups}
+                  onConfirmCardDelete={handleCardDeleteConfirm}
+                />
 
-              <ConfirmDeletePopup
-                isOpen={isConfirmDeletePopupOpen}
-                onClose={closeAllPopups}
-                onConfirmCardDelete={handleCardDeleteConfirm}
-              />
+                <EditAvatarPopup
+                  isOpen={isEditAvatarPopupOpen}
+                  onClose={closeAllPopups}
+                  onUpdateAvatar={handleUpdateAvatar}
+                />
 
-              <EditAvatarPopup
-                isOpen={isEditAvatarPopupOpen}
-                onClose={closeAllPopups}
-                onUpdateAvatar={handleUpdateAvatar}
-              />
+                <EditProfilePopup
+                  isOpen={isEditProfilePopupOpen}
+                  onClose={closeAllPopups}
+                  onUpdateUser={handleUpdateUser}
+                />
 
-              <EditProfilePopup
-                isOpen={isEditProfilePopupOpen}
-                onClose={closeAllPopups}
-                onUpdateUser={handleUpdateUser}
-              />
-
-              <AddPlacePopup
-                isOpen={isAddPlacePopupOpen}
-                onClose={closeAllPopups}
-                onAddPlace={handleAddPlaceSubmit}
-              />
-              <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-            </div>
-          </ProtectedRoute>
-        }
-      ></Route>
-    </Routes>
-  </CurrentUserContext.Provider>
-);
+                <AddPlacePopup
+                  isOpen={isAddPlacePopupOpen}
+                  onClose={closeAllPopups}
+                  onAddPlace={handleAddPlaceSubmit}
+                />
+                <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+              </div>
+            </ProtectedRoute>
+          }
+        ></Route>
+      </Routes>
+    </CurrentUserContext.Provider>
+  );
 }
 
 export default App;

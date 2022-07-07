@@ -44,7 +44,7 @@ const nav = useNavigate();
           className={`auth__form auth__${props.name}-form popup__form`}
           name='Form'
           action='#'
-          noValidate
+          // noValidate
         >
           <input
             id='username'

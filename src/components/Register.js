@@ -1,15 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-// import InfoToolTip from './InfoTooltip';
+import InfoToolTip from './InfoTooltip';
 import PageWithForm from './PageWithForm';
 
-export default function Register({ onSignUp }) {
+export default function Register({ onSignUp, isOpen, onClose, regStatus}) {
   
 //   function handlerSubmitRegister(onSignUp) {
 
 //   }
     
   return (
+    <div>
       <PageWithForm
         title='Регистрация'
         btnText='Зарегистрироваться'
@@ -26,5 +27,7 @@ export default function Register({ onSignUp }) {
           </Link>
         </p>
       </PageWithForm>
+      <InfoToolTip isOpen={isOpen} onClose={onClose} regStatus={regStatus} />
+    </div>
   );
 }

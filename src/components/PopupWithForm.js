@@ -11,7 +11,9 @@ export default function PopupWithForm(props) {
           type='button'
           onClick={props.onClose}
         />
-        <h2 className='popup__title'>{props.title}</h2>
+        <h2 className={`'popup__title' ${
+              !props.title && 'popup__btn_hide'
+            }`}>{props.title}</h2>
         <form
           onSubmit={props.onSubmit}
           className={`popup__form popup__${props.name}-form`}
