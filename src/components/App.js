@@ -32,7 +32,7 @@ function App() {
     avatar: userPic,
     email: '',
   });
-  const [headerEmail, setHeaderEmail] = useState('');
+  const [headerEmail, setHeaderEmail] = useState();
   const [currentCard, setCurrentCard] = useState({});
   const userDataTargetUrl = 'https://nomoreparties.co/v1/cohort-41/users/me';
   const [cards, setCards] = useState([]);
@@ -55,13 +55,13 @@ function App() {
   }
 
   function onSignIn(password, email) {
+    console.log(email);
     apiAuth
       .signInSignUp('/signin', password, email)
       .then((res) => {
         if (res.token) {
           localStorage.setItem('jwt', res.token);
-          setLoggenIn(true);
-          nav('/');
+          tokenCheck();
         }
       })
       .catch((err) => console.log(err));
@@ -69,7 +69,7 @@ function App() {
 
   function logUot() {
     setLoggenIn(false);
-    localStorage.removeItem('jwt'); 
+    localStorage.removeItem('jwt');
   }
 
   function onRegisterRedirect() {
@@ -78,46 +78,40 @@ function App() {
   }
 
   function tokenCheck() {
-    let jwt = localStorage.getItem('jwt')
-    if(jwt) {
+    let jwt = localStorage.getItem('jwt');
+    if (jwt) {
       apiAuth
         .userValidation('/users/me', jwt)
         .then((res) => {
           if (res.data.email) {
-            // currentUser.email = res.data.email;
             setHeaderEmail(res.data.email);
             setLoggenIn(true);
             nav('/');
-            
-            console.log(currentUser);
           }
         })
         .catch((err) => console.log(err));
     }
   }
 
-    useEffect(() => {
-      api
-        .getUserData(userDataTargetUrl)
-        .then((userData) => {
-          setCurrentUser(userData);
-        })
-        .catch((err) => console.log(err));
-    }, []);
+  useEffect(() => {
+    api
+      .getUserData(userDataTargetUrl)
+      .then((userData) => {
+        setCurrentUser(userData);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   useEffect(() => {
-    tokenCheck()
+    tokenCheck();
   }, []);
 
   useEffect(() => {
     api
       .getInitialCards()
-      .then(
-        (cardsList) => {
-          setCards(cardsList);
-        },
-        []
-      )
+      .then((cardsList) => {
+        setCards(cardsList);
+      }, [])
       .catch((err) => console.log(err));
   });
 
@@ -149,8 +143,6 @@ function App() {
       })
       .catch((err) => console.log(err));
   }
-
-
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);

@@ -1,22 +1,18 @@
 import React, { useState } from 'react';
-import { useContext } from 'react';
 import { useNavigate } from 'react-router';
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import Header from "./Header";
+import Header from './Header';
 
 export default function PageWithForm(props) {
-
-const currentUser = useContext(CurrentUserContext);  
-const [email, setEmail] = useState('');
-const [password, setPassword] = useState('');
-const nav = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const nav = useNavigate();
 
   function handleSetEmail(e) {
-  setEmail(e.target.value);
+    setEmail(e.target.value);
   }
 
   function handleSetPassword(e) {
-  setPassword(e.target.value);
+    setPassword(e.target.value);
   }
 
   function handleSubmit(e) {
@@ -26,14 +22,13 @@ const nav = useNavigate();
       password,
       email,
     });
-    (currentUser.email = email);  
     setEmail('');
-    setPassword('')
+    setPassword('');
   }
 
   function HandlerHeaderBtn() {
     nav(props.headerLinkPath);
-  }   
+  }
 
   return (
     <div className='auth'>
@@ -48,7 +43,6 @@ const nav = useNavigate();
           className={`auth__form auth__${props.name}-form popup__form`}
           name='Form'
           action='#'
-          // noValidate
         >
           <input
             id='username'

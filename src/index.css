@@ -4,6 +4,9 @@
 @import url(../src/blocks/page/page.css);
 @import url(../src/blocks/header/header.css);
 @import url(../src/blocks/header/__logo/header__logo.css);
+@import url(../src/blocks/header//__user-btn/header__user-btn.css);
+@import url(../src/blocks/header/__user-email/header__user-email.css);
+@import url(../src/blocks/header/__user-block/header__user-block.css);
 @import url(../src/blocks/profile/profile.css);
 @import url(../src/blocks/profile/__container/profile__container.css);
 @import url(../src/blocks/profile/__info/profile__info.css);
@@ -26,6 +29,7 @@
 @import url(../src/blocks/popup/__form/popup__form.css);
 @import url(../src/blocks/popup/__field/popup__field.css);
 @import url(../src/blocks/popup/__btn-save/popup__btn-save.css);
+@import url(../src/blocks/popup/__btn-hide/popup__btn-hide.css);
 @import url(../src/blocks/popup/_opened/popup_opened.css);
 @import url(../src/blocks/gallery/__img/gallery__img.css);
 @import url(../src/blocks/gallery/__delete-btn/gallery__delete-btn.css);
@@ -36,12 +40,24 @@
 @import url(../src/blocks/popup/__form/_submit/_inactive/popup__form_submit_inactive.css);
 @import url(../src/blocks/input-error/input-error.css);
 @import url(../src/blocks/input-error/_active/input-error_active.css);
+@import url(../src/blocks/input-error/_auth/input-error_auth.css);
 @import url(../src/blocks/input_type_error/input_type_error.css);
 @import url(../src/blocks/profile/__avatar/_opacity/profile__avatar_opacity.css);
 @import url(../src/blocks/profile/__avatar-btn/profile__avatar-btn.css);
 @import url(../src/blocks/gallery/__like/gallery_like.css);
 @import url(../src/blocks/gallery/__like/__like-qty/gallery__like-qty.css);
 @import url(../src/blocks/body/body.css);
+@import url(../src/blocks/infoToolTip/_title/infoToolTip_title.css);
+@import url(../src/blocks/infoToolTip/_pic/_pic_ok/infoToolTip__pic_ok.css);
+@import url(../src/blocks/infoToolTip/_pic/_pic_error/infoToolTip__pic_error.css);
+@import url(../src/blocks/infoToolTip/_pic/infoToolTip__pic.css);
+@import url(../src/blocks/auth/auth.css);
+@import url(../src/blocks/auth/__container/auth__container.css);
+@import url(../src/blocks/auth/__field/auth__field.css);
+@import url(../src/blocks/auth/__title/auth__title.css);
+@import url(../src/blocks/auth/__btn-save/auth__btn-save.css);
+@import url(../src/blocks/auth/__login-link/auth__login-link.css);
+@import url(../src/blocks/auth/__login-text/auth__login-text.css);
 
 #root {
   background-color: #000;
@@ -52,191 +68,4 @@
   font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
   text-rendering: optimizeLegibility;
   max-width: 880px;
-}
-
-.popup__btn_hide {
-  display: none;
-}
-
-.infoToolTip_title {
-  margin: 0;
-    font-family: "Inter", "Arial", "Helvetica", sans-serif;
-    font-style: normal;
-    font-weight: 900;
-    font-size: 24px;
-    line-height: 29px;
-    color: #000000;
-    padding-bottom: 26px;
-    text-align: center;
-}
-
-.infoToolTip_pic{
-  display: flex;
-min-height: 120px;
-min-width: 120px;
-align-self: center;
-padding: 29px 0 32px 0;
-background-repeat: no-repeat;
-background-position: center;
-}
-
-.infoToolTip_pic_ok {
-  background-image: url(/src/images/Ok.svg);
-}
-
-.infoToolTip_pic_error {
-  background-image: url(/src/images/Error.svg);
-}
-
-.header__user-btn {
-  background-color: #000;
-  border: none;
-  padding: 0;
-  margin: 0;
-  color: #fff;
-  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 22px;
-  transition: linear 0.3s;
-  text-decoration: none;
-  
-}
-
-.header__user-email {
-  color: #fff;
-  padding: 0;
-  margin-right: 24px;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 22px;
-}
-
-.header__user-block {
-  display: flex;
-}
-
-.auth {
-  color: #fff;
-}
-
-.auth__container {
-  margin: 60px auto 0;
-  display: flex;
-  flex-direction: column;
-  max-width: 358px;
-}
-
-.auth__field {
-  outline: none;
-  border: none;
-  padding: 0 0 10px 0;
-  vertical-align: middle;
-  border-bottom: 2px solid #cccccc;
-  box-sizing: border-box;
-  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 17px;
-  color: #cccccc;
-  background-color: #000;
-}
-
-.auth__field::placeholder {
-  color: #cccccc;
-  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 17px;
-}
-
-.auth__field:autofill,
-.auth__field:autofill:hover, 
-.auth__field:autofill:focus,  
-.auth__field:autofill:active{
-    box-shadow: 0 0 0 30px rgb(0, 0, 0) inset !important;
-    color: #ccc !important;
-}
-
-.auth__field:-webkit-autofill,
-.auth__field:-webkit-autofill:hover, 
-.auth__field:-webkit-autofill:focus,  
-.auth__field:-webkit-autofill:active{
-    -webkit-box-shadow: 0 0 0 30px rgb(0, 0, 0) inset !important;
-    box-shadow: 0 0 0 30px rgb(0, 0, 0) inset !important;
-    -webkit-text-fill-color: #ccc !important;
-}
-
-.auth__btn-save {
-  align-self: center;
-  width: 358px;
-  height: 50px;
-  background-color: #ffffff;
-  border: none;
-  padding: 0;
-  margin: 0;
-  margin-top: 186px;
-  color: rgb(0, 0, 0);
-  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 22px;
-  text-align: center;
-  border-radius: 2px;
-  transition: linear 0.3s;
-}
-
-.auth__title {
-  margin: 0;
-  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
-  font-style: normal;
-  font-weight: 900;
-  font-size: 24px;
-  line-height: 29px;
-  color: #ffffff;
-  padding-bottom: 50px;
-  text-align: center;
-}
-
-@media screen and (max-width: 540px) {
-  .auth__title {
-    font-size: 18px;
-    line-height: 22px;
-    padding-bottom: 75px;
-  }
-}
-
-.auth__login-text {
-  text-align: center;
-  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 17px;
-  color: #fff;
-}
-
-.auth__login-link {
-  margin-left: 5px;
-  text-align: center;
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 17px;
-  color: #fff;
-  text-decoration: none;
-}
-
-.input-error_auth {
-  visibility: hidden;
-  margin: 5px 0 9px 0;
-  max-height: 30px;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 17px;
 }

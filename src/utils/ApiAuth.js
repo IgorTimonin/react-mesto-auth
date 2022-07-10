@@ -1,4 +1,4 @@
-import { resultHandler } from "./Api";
+import { resultHandler } from './Api';
 
 class ApiAuth {
   constructor() {
@@ -16,9 +16,12 @@ class ApiAuth {
   userValidation(endpoint, jwt) {
     return fetch(this.baseAuthUrl + `${endpoint}`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json', "Authorization" : `Bearer ${jwt}`},
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
     }).then(resultHandler);
   }
 }
 
-  export const apiAuth = new ApiAuth();
+export const apiAuth = new ApiAuth();

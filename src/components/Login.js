@@ -1,8 +1,7 @@
 import React from 'react';
 import PageWithForm from './PageWithForm';
 
-export default function Login({ onSignIn }) {  
-
+export default function Login({ onSignIn}) {
   return (
     <PageWithForm
       title='Вход'
