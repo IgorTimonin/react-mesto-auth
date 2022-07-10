@@ -4,10 +4,6 @@ import InfoToolTip from './InfoTooltip';
 import PageWithForm from './PageWithForm';
 
 export default function Register({ onSignUp, isOpen, onClose, regStatus}) {
-  
-//   function handlerSubmitRegister(onSignUp) {
-
-//   }
     
   return (
     <div>

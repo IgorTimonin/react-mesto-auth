@@ -25,12 +25,14 @@ function App() {
     useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
-  const [selectedCard, setselectedCard] = useState({});
+  const [selectedCard, setSelectedCard] = useState({});
   const [currentUser, setCurrentUser] = useState({
     name: 'пользователь',
     about: 'профессия',
     avatar: userPic,
+    email: '',
   });
+  const [headerEmail, setHeaderEmail] = useState('');
   const [currentCard, setCurrentCard] = useState({});
   const userDataTargetUrl = 'https://nomoreparties.co/v1/cohort-41/users/me';
   const [cards, setCards] = useState([]);
@@ -44,7 +46,6 @@ function App() {
         if (res.statusCode !== 400) {
           setIsRegStatus('ok');
           setIsInfoToolTipOpen(true);
-          // nav('/sign-in');
         }
       })
       .catch((err) => {
@@ -68,19 +69,55 @@ function App() {
 
   function logUot() {
     setLoggenIn(false);
-    localStorage.removeItem('jwt');
+    localStorage.removeItem('jwt'); 
   }
 
-  function onClosedRedirect() {
-    nav('/sign-in')
+  function onRegisterRedirect() {
+    closeAllPopups();
+    nav('/sign-in');
   }
+
+  function tokenCheck() {
+    let jwt = localStorage.getItem('jwt')
+    if(jwt) {
+      apiAuth
+        .userValidation('/users/me', jwt)
+        .then((res) => {
+          if (res.data.email) {
+            // currentUser.email = res.data.email;
+            setHeaderEmail(res.data.email);
+            setLoggenIn(true);
+            nav('/');
+            
+            console.log(currentUser);
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  }
+
+    useEffect(() => {
+      api
+        .getUserData(userDataTargetUrl)
+        .then((userData) => {
+          setCurrentUser(userData);
+        })
+        .catch((err) => console.log(err));
+    }, []);
+
+  useEffect(() => {
+    tokenCheck()
+  }, []);
 
   useEffect(() => {
     api
       .getInitialCards()
-      .then((cardsList) => {
-        setCards(cardsList);
-      }, [])
+      .then(
+        (cardsList) => {
+          setCards(cardsList);
+        },
+        []
+      )
       .catch((err) => console.log(err));
   });
 
@@ -113,14 +150,7 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-  useEffect(() => {
-    api
-      .getUserData(userDataTargetUrl)
-      .then((userData) => {
-        setCurrentUser(userData);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -149,7 +179,7 @@ function App() {
   };
 
   const handleCardClick = (data) => {
-    setselectedCard(data);
+    setSelectedCard(data);
   };
 
   const handleUpdateUser = (userData) => {
@@ -194,7 +224,7 @@ function App() {
             <Register
               onSignUp={onSignUp}
               isOpen={isInfoToolTipOpen}
-              onClose={onClosedRedirect}
+              onClose={onRegisterRedirect}
               regStatus={isRegStatus}
             />
           }
@@ -205,7 +235,7 @@ function App() {
             <ProtectedRoute loggedIn={loggedIn}>
               <div>
                 <Header
-                  // userEmail={userEmail}
+                  userEmail={headerEmail}
                   loggedIn={loggedIn}
                   headerBtnText='Выйти'
                   headerBtnAction={logUot}

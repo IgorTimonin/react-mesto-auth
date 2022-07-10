@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Header from "./Header";
 
 export default function PageWithForm(props) {
 
+const currentUser = useContext(CurrentUserContext);  
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
 const nav = useNavigate();
@@ -23,6 +26,7 @@ const nav = useNavigate();
       password,
       email,
     });
+    (currentUser.email = email);  
     setEmail('');
     setPassword('')
   }

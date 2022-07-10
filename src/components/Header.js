@@ -1,16 +1,16 @@
 import { Link } from "react-router-dom";
 
 export default function Header(props) {
-
+// console.log(props.userEmail);
   return (
     <header className='header'>
       <Link className='header__logo' to='/' />
       <div className='header__user-block'>
-        {props.loggedIn && (
-          <div className='header__user-email btn-opacity'>
-            {props.userEmail}
-          </div>
-        )}
+        <div
+          className={`${props.loggedIn ? 'header__user-email btn-opacity' : 'popup__btn_hide'}`}
+        >
+          {props.userEmail}
+        </div>
         <button
           className='header__user-btn btn-opacity'
           onClick={props.headerBtnAction}

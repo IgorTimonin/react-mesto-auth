@@ -1,13 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router';
 import PopupWithForm from './PopupWithForm';
 
 
 export default function InfoToolTip({ isOpen, onClose, regStatus }) {
-//  function useCloseRedirect() {
-//     const nav = useNavigate();
-//     nav('/sign-in')
-//  }
 
   return (
     <PopupWithForm
@@ -16,7 +11,6 @@ export default function InfoToolTip({ isOpen, onClose, regStatus }) {
       btnText=''
       isOpen={isOpen}
       onClose={onClose}
-      //   onSubmit={handlerRegistration}
     >
       <div className={`infoToolTip_pic infoToolTip_pic_${regStatus}`}></div>
       <h2 className='infoToolTip_title'>
