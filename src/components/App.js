@@ -16,6 +16,7 @@ import ConfirmDeletePopup from './ConfirmDeletePopup';
 import Login from './Login.js';
 import Register from './Register.js';
 import ProtectedRoute from './ProtectedRoute';
+import InfoToolTip from './InfoTooltip';
 
 function App() {
   const [isInfoToolTipOpen, setIsInfoToolTipOpen] = useState(false);
@@ -42,6 +43,7 @@ function App() {
     isEditAvatarPopupOpen ||
     isEditProfilePopupOpen ||
     isAddPlacePopupOpen ||
+    isInfoToolTipOpen ||
     selectedCard;
 
   function onSignUp(email, password) {
@@ -60,7 +62,6 @@ function App() {
   }
 
   function onSignIn(password, email) {
-    console.log(email);
     apiAuth
       .signInSignUp('/signin', password, email)
       .then((res) => {
@@ -94,7 +95,7 @@ function App() {
         document.removeEventListener('keydown', closeByEscape);
       };
     }
-  }, [isOpen]); 
+  }, [isOpen]);
 
   function tokenCheck() {
     const jwt = localStorage.getItem('jwt');
@@ -231,14 +232,7 @@ function App() {
         <Route path='/sign-in' element={<Login onSignIn={onSignIn} />}></Route>
         <Route
           path='/sign-up'
-          element={
-            <Register
-              onSignUp={onSignUp}
-              isOpen={isInfoToolTipOpen}
-              onClose={onRegisterRedirect}
-              regStatus={isRegStatus}
-            />
-          }
+          element={<Register onSignUp={onSignUp} />}
         ></Route>
         <Route
           path='/'
@@ -291,6 +285,11 @@ function App() {
           }
         ></Route>
       </Routes>
+      <InfoToolTip
+        isOpen={isInfoToolTipOpen}
+        onClose={onRegisterRedirect}
+        regStatus={isRegStatus}
+      />
     </CurrentUserContext.Provider>
   );
 }
