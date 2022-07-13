@@ -38,6 +38,11 @@ function App() {
   const [cards, setCards] = useState([]);
   const [loggedIn, setLoggenIn] = useState(false);
   const nav = useNavigate();
+  const isOpen =
+    isEditAvatarPopupOpen ||
+    isEditProfilePopupOpen ||
+    isAddPlacePopupOpen ||
+    selectedCard;
 
   function onSignUp(email, password) {
     apiAuth
@@ -77,8 +82,22 @@ function App() {
     nav('/sign-in');
   }
 
+  useEffect(() => {
+    function closeByEscape(evt) {
+      if (evt.key === 'Escape') {
+        closeAllPopups();
+      }
+    }
+    if (isOpen) {
+      document.addEventListener('keydown', closeByEscape);
+      return () => {
+        document.removeEventListener('keydown', closeByEscape);
+      };
+    }
+  }, [isOpen]); 
+
   function tokenCheck() {
-    let jwt = localStorage.getItem('jwt');
+    const jwt = localStorage.getItem('jwt');
     if (jwt) {
       apiAuth
         .userValidation('/users/me', jwt)
@@ -111,9 +130,9 @@ function App() {
       .getInitialCards()
       .then((cardsList) => {
         setCards(cardsList);
-      }, [])
+      })
       .catch((err) => console.log(err));
-  });
+  }, []);
 
   function handleCardLike(card) {
     // Проверяем, есть ли уже лайк на этой карточке

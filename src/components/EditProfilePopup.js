@@ -34,10 +34,6 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
     setDescription(currentUser.about);
   }, [isOpen]);
 
-  function clearInput(e) {
-    e.target.name === 'description' ? setDescription('') : setName('');
-  }
-
   function prevInputName() {
      if (!name) {
        setName(currentUser.name);
@@ -65,7 +61,6 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         type='text'
         value={name}
         onChange={handleChangeName}
-        onClick={clearInput}
         onBlur={prevInputName}
         name='name'
         placeholder='Введите имя'
@@ -83,7 +78,6 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         type='text'
         value={description}
         onChange={handleChangeDescription}
-        onClick={clearInput}
         onBlur={prevInputDescription}
         name='description'
         placeholder='О себе'
