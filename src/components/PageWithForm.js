@@ -41,7 +41,7 @@ export default function PageWithForm(props) {
         <form
           onSubmit={handleSubmit}
           className={`auth__form auth__${props.name}-form popup__form`}
-          name='Form'
+          name={`${props.name}_form`}
           action='#'
         >
           <input
