@@ -67,15 +67,31 @@ function App() {
       .then((res) => {
         if (res.token) {
           localStorage.setItem('jwt', res.token);
-          tokenCheck();
+          localStorage.setItem('sessionToken', '1');
+          checkSessionToken()
+          // tokenCheck();
         }
       })
       .catch((err) => console.log(err));
   }
 
+  function checkSessionToken() {
+    const sessionToken = localStorage.getItem('sessionToken');
+    console.log(sessionToken);
+    if (sessionToken === '1') {
+      // console.log(`document.cookie равен: ${document.cookie}`);
+      // if (document.cookie === 'sessionToken=1') {
+      // setLoggenIn(true);
+      tokenCheck();
+    } else {
+      // setLoggenIn(false);
+      console.log('Неверный токен сессии');
+    }
+  }
+
   function logUot() {
     setLoggenIn(false);
-    localStorage.removeItem('jwt');
+    localStorage.removeItem('sessionToken');
   }
 
   function onRegisterRedirect() {
@@ -103,15 +119,22 @@ function App() {
       apiAuth
         .userValidation('/users/me', jwt)
         .then((res) => {
+          // if(res) {
+            setCurrentUser(res);
+          // }
           if (res.data.email) {
             setHeaderEmail(res.data.email);
             setLoggenIn(true);
-            nav('/');
+            // nav('/');
           }
         })
         .catch((err) => console.log(err));
     }
   }
+
+  useEffect(() => {
+    nav('/');
+  }, [loggedIn]);
 
   useEffect(() => {
     api
@@ -123,7 +146,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    tokenCheck();
+    // tokenCheck();
+    checkSessionToken();
   }, []);
 
   useEffect(() => {
@@ -152,12 +176,16 @@ function App() {
   function handleCardDeleteConfirm() {
     api
       .deleteCard(currentCard._id)
-      .then((newCards) =>
-        // Отправляем запрос на удаление в API, получаем обновлённые данные карточек, фильтром создаём новый объект карточек, без карточки с удалённым id
-        setCards((data) =>
-          data.filter((c) => (c._id === currentCard._id ? newCards : c))
-        )
-      )
+      .then(() => {
+      const newCards = cards.filter((c) => c._id !== currentCard._id);
+      setCards(newCards);
+        
+        // (newCards) =>
+        // // Отправляем запрос на удаление в API, получаем обновлённые данные карточек, фильтром создаём новый объект карточек, без карточки с удалённым id
+        // setCards((data) =>
+        //   data.filter((c) => (c._id === currentCard._id ? newCards : c))
+        // )
+  })
       .then(() => {
         closeAllPopups();
       })
